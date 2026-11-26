@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>המטבח שלי – מתכונים</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Assistant:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F8F4;--surface:#fff;--ink:#17241D;--muted:#5B6B62;--green:#1F4D36;--lemon:#F2D84B;--chili:#D6402B;--line:#DCE4DD;--tile:#E8EFE6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101A14;--surface:#18271E;--ink:#EEF3EC;--muted:#A3B5A9;--green:#8FD4A8;--line:#2B4034;--tile:#22372B;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101A14;--surface:#18271E;--ink:#EEF3EC;--muted:#A3B5A9;--green:#8FD4A8;--line:#2B4034;--tile:#22372B;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Assistant,Arial,sans-serif;font-size:17px;line-height:1.6}
+h1,h2,h3,button{font-family:Rubik,Arial,sans-serif}
+header{background:var(--green);color:#fff;padding:40px 20px 32px}
+:root[data-theme="dark"] header,:root:not([data-theme="light"]) header{}
+.wrap{max-width:1040px;margin:0 auto}
+h1{font-size:clamp(34px,7vw,64px);line-height:1.05;margin:0 0 10px;font-weight:800}
+header p{margin:0 0 22px;max-width:46ch;opacity:.9}
+#q{width:100%;max-width:460px;padding:13px 16px;border-radius:999px;border:0;font:inherit;background:#fff;color:#17241D}
+#q:focus-visible,button:focus-visible{outline:3px solid var(--lemon);outline-offset:2px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;padding:20px 0}
+.chip{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 16px;border-radius:999px;cursor:pointer;font-weight:500;font-size:15px}
+.chip[aria-pressed="true"]{background:var(--chili);border-color:var(--chili);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;padding-bottom:48px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;text-align:right;padding:0;color:inherit;font:inherit;display:block;width:100%}
+.card:hover{border-color:var(--chili)}
+.tile{height:110px;display:grid;place-items:center;font-size:56px;background:var(--tile)}
+.card .b{padding:12px 16px 16px}
+.card h3{margin:0 0 4px;font-size:19px}
+.meta{color:var(--muted);font-size:14px}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0}
+dialog{width:min(640px,94vw);max-height:90vh;border:0;border-radius:16px;padding:0;background:var(--surface);color:var(--ink)}
+dialog::backdrop{background:rgba(0,0,0,.55)}
+.d-top{background:var(--lemon);color:#17241D;padding:22px 24px;display:flex;gap:16px;align-items:center}
+.d-top .e{font-size:48px}
+.d-top h2{margin:0;font-size:26px}
+.d-body{padding:20px 24px 26px}
+.d-body h3{margin:18px 0 8px;font-size:18px;color:var(--chili)}
+.d-body ul,.d-body ol{margin:0;padding-inline-start:22px}
+.d-body li{margin-bottom:6px}
+.x{margin-inline-start:auto;border:0;background:#17241D;color:#fff;border-radius:999px;padding:7px 16px;cursor:pointer;font-size:15px}
+footer{text-align:center;color:var(--muted);padding:0 20px 36px;font-size:14px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>המטבח שלי</h1>
+<p>מתכונים פשוטים לכל יום: חפשו מנה, בחרו קטגוריה ופתחו מתכון מלא.</p>
+<input id="q" type="search" placeholder="חיפוש מתכון או מרכיב…" aria-label="חיפוש">
+</div></header>
+<main class="wrap">
+<div class="chips" id="chips" role="group" aria-label="קטגוריות"></div>
+<div class="grid" id="grid"></div>
+</main>
+<footer>רוצים להוסיף עוד מתכונים? בקשו מ-Claude והם יתווספו לרשימה.</footer>
+<dialog id="dlg"><div id="dbox"></div></dialog>
+<script>
+const R=[
+{n:"שקשוקה",c:"בוקר",t:25,e:"🍳",i:["2 כפות שמן זית","1 בצל קצוץ","3 שיני שום","1 פלפל אדום קצוץ","6 עגבניות בשלות או קופסת עגבניות מרוסקות","1 כפית פפריקה","½ כפית כמון","4 ביצים","מלח ופלפל"],s:["מטגנים בצל ופלפל בשמן זית 5 דקות.","מוסיפים שום ותבלינים ומערבבים דקה.","מוסיפים עגבניות ומבשלים 10 דקות עד שהרוטב מסמיך.","יוצרים גומחות, שוברים ביצים ומבשלים מכוסה 5 דקות.","מגישים עם לחם טרי."]},
+{n:"פנקייק רך",c:"בוקר",t:20,e:"🥞",i:["1½ כוסות קמח","1 כף סוכר","2 כפיות אבקת אפייה","¼ כפית מלח","1¼ כוסות חלב","1 ביצה","3 כפות חמאה מומסת"],s:["מערבבים את היבשים בקערה.","מקציפים חלב, ביצה וחמאה ומוסיפים ליבשים, מערבבים קצת בלבד.","מחממים מחבת ומוזגים כמות קטנה של בלילה.","הופכים כשמופיעות בועות ומטגנים עוד דקה.","מגישים עם מייפל או פירות."]},
+{n:"חביתה עם עשבי תיבול",c:"בוקר",t:10,e:"🥚",i:["3 ביצים","1 כף חלב","חופן פטרוזיליה ושמיר קצוצים","1 כפית חמאה","מלח ופלפל"],s:["טורפים ביצים עם חלב, עשבים ותבלין.","ממיסים חמאה במחבת בינונית.","יוצקים ומבשלים על אש נמוכה עד שהשולי מתייצבים.","מקפלים ומגישים חם."]},
+{n:"פסטה ברוטב עגבניות",c:"עיקריות",t:30,e:"🍝",i:["400 גרם פסטה","2 כפות שמן זית","4 שיני שום","קופסת עגבניות מרוסקות","1 כפית אורגנו","עלי בזיליקום","פרמזן מגורד"],s:["מבשלים פסטה לפי ההוראות ושומרים כוס מי בישול.","מטגנים שום בשמן זית חצי דקה.","מוסיפים עגבניות ואורגנו ומבשלים 12 דקות.","מערבבים עם הפסטה, מוסיפים מעט מי בישול.","מפזרים בזיליקום ופרמזן."]},
+{n:"שניצל תנור פריך",c:"עיקריות",t:35,e:"🍗",i:["4 חזות עוף פרוסות דק","1 כוס פירורי לחם","½ כפית פפריקה","2 ביצים טרופות","½ כוס קמח","2 כפות שמן","מלח ופלפל"],s:["מחממים תנור ל-200 מעלות.","מתבלים את העוף ומעבירים בקמח, בביצה ובפירורים.","מסדרים על תבנית עם נייר אפייה ומתיזים שמן.","אופים 12 דקות, הופכים ואופים עוד 10 דקות.","מגישים עם לימון."]},
+{n:"מג׳דרה",c:"עיקריות",t:45,e:"🍚",i:["1 כוס עדשים חומות","1 כוס אורז","3 בצלים פרוסים","4 כפות שמן","1 כפית כמון","3 כוסות מים","מלח"],s:["מבשלים עדשים במים 15 דקות.","מטגנים בצלים בשמן עד שהם מזהיבים ומקורמלים, ומשאירים חצי בצד.","מוסיפים אורז, כמון ומלח לעדשים ומבשלים מכוסה 20 דקות.","מגישים עם הבצל המטוגן ויוגורט."]},
+{n:"סלמון בתנור",c:"עיקריות",t:25,e:"🐟",i:["4 פילטים של סלמון","2 כפות שמן זית","2 שיני שום כתושות","מיץ וקליפת לימון","שמיר","מלח ופלפל"],s:["מחממים תנור ל-200 מעלות.","מערבבים שמן, שום, לימון ותבלינים.","מורחים על הדגים ואופים 12 דקות.","מפזרים שמיר ומגישים."]},
+{n:"סלט ישראלי",c:"סלטים ומרקים",t:10,e:"🥗",i:["4 עגבניות","3 מלפפונים","1 בצל סגול קטן","חופן פטרוזיליה","3 כפות שמן זית","מיץ מלימון אחד","מלח"],s:["קוצצים את הירקות לקוביות קטנות.","מערבבים עם שמן, לימון ומלח.","מגישים מיד כדי שיישאר פריך."]},
+{n:"חומוס ביתי",c:"סלטים ומרקים",t:20,e:"🧆",i:["2 כוסות חומוס מבושל","½ כוס טחינה גולמית","מיץ מ-2 לימונים","2 שיני שום","½ כפית כמון","¼ כוס מים קרים","מלח"],s:["טוחנים טחינה, לימון ושום במעבד מזון עד שמתקבל קרם.","מוסיפים חומוס, כמון ומלח וטוחנים 3 דקות.","מוסיפים מים קרים עד לקרמיות הרצויה.","מגישים עם שמן זית ופפריקה."]},
+{n:"מרק עוף ביתי",c:"סלטים ומרקים",t:90,e:"🍲",i:["1 עוף חתוך","2 גזרים","2 סלרי","1 בצל","1 פרוסת דלעת","פטרוזיליה","מלח ופלפל","מים לכיסוי"],s:["מכסים עוף במים ומביאים לרתיחה, ומקלפים את הקצף.","מוסיפים ירקות ותבלינים.","מבשלים על אש נמוכה שעה וחצי.","מסננים או מגישים עם הירקות ואטריות."]},
+{n:"עוגת שוקולד בקערה אחת",c:"קינוחים",t:50,e:"🍫",i:["1½ כוסות קמח","1 כוס סוכר","⅓ כוס קקאו","1 כפית סודה לשתייה","1 כוס מים חמים","½ כוס שמן","1 כף חומץ","1 כפית וניל"],s:["מחממים תנור ל-175 מעלות.","מערבבים יבשים בתבנית משומנת.","מוסיפים נוזלים ומערבבים עד חלקות.","אופים 35 דקות ומצננים לפני החיתוך."]},
+{n:"עוגיות שוקולד צ׳יפס",c:"קינוחים",t:25,e:"🍪",i:["2¼ כוסות קמח","1 כפית סודה לשתייה","1 כוס חמאה רכה","¾ כוס סוכר","¾ כוס סוכר חום","2 ביצים","2 כוסות שוקולד צ׳יפס"],s:["מחממים תנור ל-180 מעלות.","מקציפים חמאה וסוכרים, מוסיפים ביצים.","מערבבים פנימה קמח וסודה ואז שוקולד.","יוצרים כדורים ואופים 10 דקות.","מצננים על התבנית 5 דקות."]}
+];
+const cats=["הכל",...new Set(R.map(r=>r.c))];
+let cat="הכל";
+const $=id=>document.getElementById(id);
+function chips(){$("chips").innerHTML=cats.map(c=>`<button class="chip" aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join("")}
+function render(){
+ const q=$("q").value.trim();
+ const list=R.filter(r=>(cat==="הכל"||r.c===cat)&&(!q||(r.n+r.i.join(" ")).includes(q)));
+ $("grid").innerHTML=list.length?list.map(r=>`<button class="card" data-n="${r.n}"><div class="tile">${r.e}</div><div class="b"><h3>${r.n}</h3><div class="meta">${r.c} • ${r.t} דקות</div></div></button>`).join(""):`<div class="empty">לא נמצאו מתכונים. נסו חיפוש אחר.</div>`;
+}
+function open(n){
+ const r=R.find(x=>x.n===n);
+ $("dbox").innerHTML=`<div class="d-top"><span class="e">${r.e}</span><div><h2>${r.n}</h2><div>${r.c} • ${r.t} דקות</div></div><button class="x" id="close">סגירה</button></div><div class="d-body"><h3>מרכיבים</h3><ul>${r.i.map(x=>`<li>${x}</li>`).join("")}</ul><h3>אופן ההכנה</h3><ol>${r.s.map(x=>`<li>${x}</li>`).join("")}</ol></div>`;
+ $("dlg").showModal();
+}
+$("chips").onclick=e=>{const b=e.target.closest("[data-c]");if(b){cat=b.dataset.c;chips();render()}};
+$("grid").onclick=e=>{const b=e.target.closest("[data-n]");if(b)open(b.dataset.n)};
+$("q").oninput=render;
+$("dlg").onclick=e=>{if(e.target===$("dlg")||e.target.id==="close")$("dlg").close()};
+chips();render();
+</script>
+</body>
+</html>
